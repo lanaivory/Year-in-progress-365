@@ -10,7 +10,7 @@ Built for reflection, intention, and momentum.
 3. Paste into Scriptable → Save
 4. Add the widget to your home screen
 
-5. ## Widget size
+## Widget size
 
 This widget is designed specifically for a **Medium (horizontal) Scriptable widget**.
 
