@@ -9,7 +9,7 @@ Built for reflection, intention, and momentum — a quiet reminder that progress
 </p>
   <img src="./images/dark.png" alt="Dark mode preview" width="220" />
   <img src="./images/pink.png" alt="Pink mode preview" width="220" />
-</p>
+
 
 ## How to install
 
