@@ -13,6 +13,7 @@ const DOTS_TOTAL = 365;
 const BG_COLOR     = new Color("#0B0F14"); // dark charcoal / near-black
 const FILLED_COLOR = new Color("#1E90FF"); // bright blue (clean, modern)
 const EMPTY_COLOR  = new Color("#4B5563"); // muted gray (soft, not white)
+const TEXT_COLOR     = Color.white();
 
 // Use the user's current timezone automatically
 const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
