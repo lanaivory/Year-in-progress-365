@@ -8,7 +8,7 @@ Built for reflection, intention, and momentum — a quiet reminder that progress
   <img src="./images/dark.png" alt="Dark mode preview" width="220" />
   <img src="./images/light.png" alt="Light mode preview" width="220" />
 </p>
----
+
 ## How to install
 
 1. Download **Scriptable** from the App Store
