@@ -7,8 +7,8 @@ Built for reflection, intention, and momentum — a quiet reminder that progress
 ## Preview
 
 <p align="center">
-  <img src="./images/preview-dark.png" alt="Dark mode preview" width="220" />
-  <img src="./images/preview-light.png" alt="Light mode preview" width="220" />
+  <img src="./images/dark.png" alt="Dark mode preview" width="220" />
+  <img src="./images/light.png" alt="Light mode preview" width="220" />
 </p>
 ---
 
