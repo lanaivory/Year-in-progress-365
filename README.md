@@ -6,9 +6,10 @@ Built for reflection, intention, and momentum — a quiet reminder that progress
 ---
 ## Preview
 
-<img src="./images/preview-dark.png" alt="Year in Progress widget – dark mode" width="300" />
-<img src="./images/preview-light.png" alt="Year in Progress widget – light mode" width="300" />
-
+<p align="center">
+  <img src="./images/preview-dark.png" alt="Dark mode preview" width="220" />
+  <img src="./images/preview-light.png" alt="Light mode preview" width="220" />
+</p>
 ---
 
 ## How to install
