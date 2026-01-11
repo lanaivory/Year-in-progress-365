@@ -3,7 +3,7 @@
 // - Right side: Date on top, X/365 below (both right-aligned)
 // - 365 dots total (non-leap visualization)
 // - Filled dots in cobalt blue based on day-of-year in Eastern Time
-// - Requests refresh around 1:00 AM ET (iOS may refresh slightly later)
+// - Requests refresh around 4:00 AM ET (iOS may refresh slightly later)
 
 // ====== CONFIG ======
 const DOTS_TOTAL = 365;
@@ -15,7 +15,7 @@ const BG_COLOR     = Color.white();
 
 // Timezone + daily tick time
 const TZ = "America/New_York";
-const TICK_HOUR_ET = 1; // 1:00 AM Eastern
+const TICK_HOUR_ET = 4; // 4:00 AM Eastern
 
 // Layout (tuned for Medium widget)
 const DOTS_PER_ROW = 39;     // you can change this (36–40 usually looks great)
