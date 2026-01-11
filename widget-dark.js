@@ -4,7 +4,7 @@
 // - Filled dots: bright blue
 // - Empty dots: muted gray (not white)
 // - Title left, Date above X/365 right
-// - Updates daily at ~1:00 AM Eastern Time
+// - Updates daily at ~4:00 AM Eastern Time
 
 // ====== CONFIG ======
 const DOTS_TOTAL = 365;
@@ -16,7 +16,7 @@ const EMPTY_COLOR  = new Color("#4B5563"); // muted gray (soft, not white)
 
 // Timezone + daily tick
 const TZ = "America/New_York";
-const TICK_HOUR_ET = 1; // 1:00 AM ET
+const TICK_HOUR_ET = 4; // 4:00 AM ET
 
 // Layout (optimized for Medium widget)
 const DOTS_PER_ROW   = 39; // try 36–40 if you want tweaks
