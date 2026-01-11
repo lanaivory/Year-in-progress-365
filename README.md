@@ -63,4 +63,4 @@ For best results:
 ## License
 free to use, modify, and share.
 
-Follow on [Linkedin](url)! 
+Follow on [Linkedin](https://www.linkedin.com/in/lanaivory/)! 
