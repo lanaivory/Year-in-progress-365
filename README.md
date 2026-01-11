@@ -7,7 +7,7 @@ Built for reflection, intention, and momentum — a quiet reminder that progress
 ## Preview
 
 <p align="center">
-  <img src="./images/blue.png" alt="BLue mode preview" width="220" />
+  <img src="./images/blue.jpg" alt="Blue mode preview" width="220" />
 </p>
 
 <p align="center">
