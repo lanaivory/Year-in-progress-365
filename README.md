@@ -3,6 +3,11 @@
 A Scriptable iOS widget that visualizes the year as **365 dots**, with each day filling in as time passes.
 
 Built for reflection, intention, and momentum — a quiet reminder that progress is happening, one day at a time.
+---
+## Preview
+
+![Year in Progress widget – dark mode](./images/preview-dark.png)
+![Year in Progress widget – light mode](./images/preview-light.png)
 
 ---
 
