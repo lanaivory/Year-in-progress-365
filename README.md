@@ -35,6 +35,7 @@ Built for reflection, intention, and momentum — a quiet reminder that progress
 
 - 🌙 **Dark mode widget:** [widget-dark.js](./widget-dark.js)
 - ☀️ **Light mode widget:** [widget-light.js](./widget-light.js)
+- 🩷 **Pink mode widget:** [widget-pink.js](./widget-pink.js)
 
 Click a file above, then use the **Copy** button to paste it directly into Scriptable.
 
