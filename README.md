@@ -53,8 +53,6 @@ For best results:
 
 ## Notes
 
-## Notes
-
 - The widget updates automatically based on the current date
 - The widget is set to automatically update once per day at **1:00 AM EST**
 - Designed for iOS Home Screen use via Scriptable
@@ -63,5 +61,6 @@ For best results:
 ---
 
 ## License
+free to use, modify, and share.
 
-MIT License — free to use, modify, and share.
+Follow on [Linkedin](url)! 
