@@ -4,12 +4,19 @@ A Scriptable iOS widget that visualizes the year as **365 dots**, with each day 
 
 Built for reflection, intention, and momentum — a quiet reminder that progress is happening, one day at a time.
 
+## Preview
+
 <p align="center">
   <img src="./images/light.png" alt="Light mode preview" width="220" />
 </p>
-  <img src="./images/dark.png" alt="Dark mode preview" width="220" />
-  <img src="./images/pink.png" alt="Pink mode preview" width="220" />
 
+<p align="center">
+  <img src="./images/dark.png" alt="Dark mode preview" width="220" />
+</p>
+
+<p align="center">
+  <img src="./images/pink.jpg" alt="Pink mode preview" width="220" />
+</p>
 
 ## How to install
 
