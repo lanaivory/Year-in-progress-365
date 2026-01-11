@@ -20,7 +20,7 @@ const TICK_HOUR_ET = 4; // 4:00 AM Eastern (DST-safe)
 
 // Layout (tuned for Medium widget)
 const DOTS_PER_ROW = 39;     // 36–40 usually looks great
-const DOT_FONT_SIZE = 8.5;     // increase to 10 if dots look too small
+const DOT_FONT_SIZE = 9;     // increase to 10 if dots look too small
 const ROW_SPACING = 1;       // spacing between dots (0–2)
 const GRID_TOP_SPACER = 6;   // space between header and grid
 // ====================
