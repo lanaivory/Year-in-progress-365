@@ -9,24 +9,29 @@
 const DOTS_TOTAL = 365;
 
 // Colors
-const FILLED_COLOR = new Color("#0047AB"); // cobalt blue
+const FILLED_COLOR = new Color("#1E90FF"); // bright blue (clean, modern)
 const EMPTY_COLOR  = new Color("#D1D5DB"); // light grey
 const BG_COLOR     = Color.white();
+const TEXT_COLOR     = Color.black();
 
-// Timezone + daily tick time
-const TZ = "America/New_York";
-const TICK_HOUR_ET = 4; // 4:00 AM Eastern
+// Use the user's current timezone automatically
+const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+// Refresh at local midnight
+const TICK_HOUR_LOCAL = 0; // 12:00 AM local time (DST-safe)
 
 // Layout (tuned for Medium widget)
-const DOTS_PER_ROW = 39;     // you can change this (36–40 usually looks great)
+const DOTS_PER_ROW = 39;     // 36–40 usually looks great
 const DOT_FONT_SIZE = 9;     // increase to 10 if dots look too small
 const ROW_SPACING = 1;       // spacing between dots (0–2)
-const GRID_TOP_SPACER = 6;   // vertical space between header and grid
+const GRID_TOP_SPACER = 6;   // space between header and grid
 // ====================
 
-function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+function clamp(n, min, max) { 
+  return Math.max(min, Math.min(max, n)); 
+}
 
-// Day-of-year computed in ET using calendar parts (avoids device timezone drift)
+// Day-of-year computed in a timezone using calendar parts
 function dayOfYearInTZ(date, timeZone) {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone,
@@ -41,7 +46,7 @@ function dayOfYearInTZ(date, timeZone) {
 
   const utc = Date.UTC(y, m - 1, d);
   const utcStart = Date.UTC(y, 0, 1);
-  return Math.floor((utc - utcStart) / (24 * 60 * 60 * 1000)) + 1; // Jan 1 = 1
+  return Math.floor((utc - utcStart) / (24 * 60 * 60 * 1000)) + 1;
 }
 
 function formatDateInTZ(date, timeZone) {
@@ -50,11 +55,11 @@ function formatDateInTZ(date, timeZone) {
     weekday: "short",
     month: "short",
     day: "numeric"
-  }).format(date); // e.g., "Sat, Jan 10"
+  }).format(date);
 }
 
-// Next refresh ~1:00 AM ET (DST-safe)
-function nextTickDateET(now, timeZone, tickHour) {
+// Next refresh at a given hour in the given timezone (DST-safe)
+function nextTickDateTZ(now, timeZone, tickHour) {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone,
     year: "numeric",
@@ -72,10 +77,14 @@ function nextTickDateET(now, timeZone, tickHour) {
   const target = (h < tickHour) ? { y, m, d } : (() => {
     const base = new Date(Date.UTC(y, m - 1, d));
     base.setUTCDate(base.getUTCDate() + 1);
-    return { y: base.getUTCFullYear(), m: base.getUTCMonth() + 1, d: base.getUTCDate() };
+    return {
+      y: base.getUTCFullYear(),
+      m: base.getUTCMonth() + 1,
+      d: base.getUTCDate()
+    };
   })();
 
-  function matchesET(dateObj, targetY, targetM, targetD, targetH) {
+  function matchesTZ(dateObj, ty, tm, td, th) {
     const p = new Intl.DateTimeFormat("en-US", {
       timeZone,
       year: "numeric",
@@ -84,25 +93,26 @@ function nextTickDateET(now, timeZone, tickHour) {
       hour: "numeric",
       hour12: false
     }).formatToParts(dateObj);
-    const yy = Number(p.find(x => x.type === "year").value);
-    const mm = Number(p.find(x => x.type === "month").value);
-    const dd = Number(p.find(x => x.type === "day").value);
-    const hh = Number(p.find(x => x.type === "hour").value);
-    return yy === targetY && mm === targetM && dd === targetD && hh === targetH;
+    return (
+      Number(p.find(x => x.type === "year").value) === ty &&
+      Number(p.find(x => x.type === "month").value) === tm &&
+      Number(p.find(x => x.type === "day").value) === td &&
+      Number(p.find(x => x.type === "hour").value) === th
+    );
   }
 
-  let candidate = new Date(Date.UTC(target.y, target.m - 1, target.d, tickHour, 0, 20)); // +20s buffer
-  for (let k = 0; k < 8; k++) {
-    if (matchesET(candidate, target.y, target.m, target.d, tickHour)) break;
-    candidate = new Date(candidate.getTime() + 15 * 60 * 1000); // nudge 15 min
+  // start near the target hour, then nudge until it matches in that timezone
+  let candidate = new Date(Date.UTC(target.y, target.m - 1, target.d, tickHour, 0, 20));
+  for (let k = 0; k < 12; k++) {
+    if (matchesTZ(candidate, target.y, target.m, target.d, tickHour)) break;
+    candidate = new Date(candidate.getTime() + 10 * 60 * 1000); // nudge 10 min
   }
   return candidate;
 }
 
-// ---- Compute progress (ET) ----
+// ---- Compute progress ----
 const now = new Date();
-const doyET = dayOfYearInTZ(now, TZ);
-const filledDots = clamp(doyET, 0, DOTS_TOTAL);
+const filledDots = clamp(dayOfYearInTZ(now, TZ), 0, DOTS_TOTAL);
 const dateLabel = formatDateInTZ(now, TZ);
 
 // ---- Build widget ----
@@ -110,39 +120,50 @@ const w = new ListWidget();
 w.backgroundColor = BG_COLOR;
 w.setPadding(10, 10, 10, 10);
 
-// ---- Header (guaranteed: date above count) ----
-const headerWrap = w.addStack();
-headerWrap.layoutVertically();
+// ---- Header (Title left, Date + Count right-aligned) ----
+const header = w.addStack();
+header.layoutHorizontally();
+header.centerAlignContent();
 
-// Row 1: Title left + Date right
-const row1 = headerWrap.addStack();
-row1.layoutHorizontally();
+// LEFT: Title
+const leftCol = header.addStack();
+leftCol.layoutVertically();
+leftCol.addSpacer();
+const title = leftCol.addText("Year in progress");
+title.font = Font.semiboldSystemFont(20);
+title.textColor = TEXT_COLOR;
+leftCol.addSpacer();
 
-const title = row1.addText("Year in progress");
-title.font = Font.semiboldSystemFont(14); // make title slightly bigger
-title.textColor = new Color("#111827");
+// Space between columns
+header.addSpacer();
 
-row1.addSpacer();
+// RIGHT: Date + Count (clean right alignment)
+const rightCol = header.addStack();
+rightCol.layoutVertically();
+rightCol.topAlignContent();
 
-const dt = row1.addText(dateLabel);
-dt.font = Font.mediumSystemFont(10);
-dt.textColor = new Color("#6B7280");
-dt.rightAlignText();
+// Date row
+const dateRow = rightCol.addStack();
+dateRow.layoutHorizontally();
+dateRow.addSpacer(); // pushes date to the right edge
 
-// Small gap
-headerWrap.addSpacer(2);
+const dt = dateRow.addText(dateLabel);
+dt.font = Font.mediumSystemFont(13);
+dt.textColor = TEXT_COLOR;
 
-// Row 2: Count right (blank left spacer)
-const row2 = headerWrap.addStack();
-row2.layoutHorizontally();
-row2.addSpacer();
+// Small vertical gap
+rightCol.addSpacer(2);
 
-const count = row2.addText(`${filledDots}/${DOTS_TOTAL}`);
-count.font = Font.semiboldSystemFont(12);
-count.textColor = new Color("#111827");
-count.rightAlignText();
+// Count row
+const countRow = rightCol.addStack();
+countRow.layoutHorizontally();
+countRow.addSpacer(); // pushes count to the same right edge
 
-// Space before grid
+const count = countRow.addText(`${filledDots}/${DOTS_TOTAL}`);
+count.font = Font.semiboldSystemFont(13);
+count.textColor = TEXT_COLOR;
+
+// Space before grid (optional – keep your original value)
 w.addSpacer(GRID_TOP_SPACER);
 
 // ---- Grid ----
@@ -154,7 +175,7 @@ let i = 0;
 for (let r = 0; r < rowsNeeded; r++) {
   const row = grid.addStack();
   row.layoutHorizontally();
-  row.centerAlignContent();   // centers row so it doesn’t hug left
+  row.centerAlignContent();
   row.spacing = ROW_SPACING;
 
   for (let c = 0; c < DOTS_PER_ROW && i < DOTS_TOTAL; c++) {
@@ -166,8 +187,9 @@ for (let r = 0; r < rowsNeeded; r++) {
 }
 
 // ---- Refresh scheduling ----
-const nextTick = nextTickDateET(now, TZ, TICK_HOUR_ET);
-const fallback = new Date(Date.now() + 60 * 60 * 1000); // hourly safety
+// Ask iOS to refresh shortly after local midnight
+const nextTick = nextTickDateTZ(now, TZ, TICK_HOUR_LOCAL);
+const fallback = new Date(Date.now() + 60 * 60 * 1000);
 w.refreshAfterDate = (nextTick < fallback) ? nextTick : fallback;
 
 Script.setWidget(w);
