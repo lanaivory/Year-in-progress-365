@@ -7,6 +7,10 @@ Built for reflection, intention, and momentum — a quiet reminder that progress
 ## Preview
 
 <p align="center">
+  <img src="./images/blue.png" alt="BLue mode preview" width="220" />
+</p>
+
+<p align="center">
   <img src="./images/light.png" alt="Light mode preview" width="220" />
 </p>
 
@@ -44,7 +48,8 @@ Built for reflection, intention, and momentum — a quiet reminder that progress
 
 - 🌙 **Dark mode widget:** [widget-dark.js](./widget-dark.js)
 - ☀️ **Light mode widget:** [widget-light.js](./widget-light.js)
-- 🩷 **Pink mode widget:** [widget-pink.js](./widget-pink.js)
+- 💙 **Blue mode widget:** [widget-blue.js](./widget-blue.js)
+- 🎀 **Pink mode widget:** [widget-pink.js](./widget-pink.js)
 
 Click a file above, then use the **Copy** button to paste it directly into Scriptable.
 
